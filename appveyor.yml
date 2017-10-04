@@ -2,12 +2,13 @@ clone_depth: 1
 
 environment:
     matrix:
-        - MINGW
-            - x64
-            - x86
-        - MSVC
-            - x64
-            - x86
+        - compiler: MINGW
+            - platform: x64
+            - platform: x86
+        - compiler: MSVC
+            - platform: x64
+            - platform: x86
             
 matrix:
     fast_finish: true
+    
