@@ -1,0 +1,13 @@
+clone_depth: 1
+
+environment:
+    matrix:
+        - MINGW
+            - x64
+            - x86
+        - MSVC
+            - x64
+            - x86
+            
+matrix:
+    fast_finish: true
