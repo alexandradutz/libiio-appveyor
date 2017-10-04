@@ -1,17 +1,12 @@
 clone_depth: 1
+os:
+    - Visual Studio 2015
+    - MINGW 
 
-configuration:
-    - Release
-    
-environment:
-    matrix:
-        - compiler: MINGW
-        - compiler: MSVC
-        
 platform:
     - x64
     - x86
-        
-matrix:
-    fast_finish: true
+    
+configuration:
+    - Release
     
