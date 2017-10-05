@@ -32,45 +32,39 @@ install:
   - echo "Downloading deps..."
   - cd c:\
   - appveyor DownloadFile http://swdownloads.analog.com/cse/build/libiio-win-deps.zip
-  - 7z x -y "c:\libiio-win-deps.zip" > nul
-  - choco install InnoSetup
+  - 7z x -y "c:\libiio-win-deps.zip"
+
   - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
-  - set PATH=%PATH%;"C:\msys64\usr\bin\mingw64"
-  - if "%BUILD_TYPE%"=="mingw" (set DEPENDENCIES=mingw-w64-%ARCH%-gcc mingw-w64-%ARCH%-cmake mingw-w64-%ARCH%-libusb mingw-w64-%ARCH%-libxml2)
-  #- if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-"%ARCH%"-freetype mingw-w64-"%ARCH%"-fontconfig" > nul)
+  - set PATH=%PATH%;"C:\msys64\usr\bin\%COMPILER%"
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syu")
-  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-x86_64-gcc-ada mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-gcc-libgfortran mingw-w64-x86_64-gcc-objc")
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-%ARCH%-gcc-ada mingw-w64-%ARCH%-gcc-fortran mingw-w64-%ARCH%-gcc-libgfortran mingw-w64-%ARCH%-gcc-objc")
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "rm /%COMPILER%/etc/gdbinit")
-  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy "%DEPENDENCIES%)
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy  mingw-w64-%ARCH%-gcc mingw-w64-%ARCH%-libusb mingw-w64-%ARCH%-cmake mingw-w64-%ARCH%-libxml2")
+ 
+  #Install Inno Setup
+  - choco install InnoSetup
 
 before_build:
   - mkdir %BUILD_TYPE%_%platform%_build
   - cd %BUILD_TYPE%_%platform%_build
-  - ps: |
-        if ($env:BUILD_TYPE -eq 'msvc') {
+  #- ps: |
+     #   if ($env:BUILD_TYPE -eq 'msvc') {
           # redirect stderr and change the exit code to prevent powershell from cancelling the build if cmake prints a warning
           # cmd /C 'cmake -G "Visual Studio 15 2017 Win64" -DCITRA_USE_BUNDLED_QT=1 -DCITRA_USE_BUNDLED_SDL2=1 -DCMAKE_USE_OPENSSL=0 .. 2>&1 && exit 0'
-          cmd /C 'cmake -G "Visual Studio 12 Win64" -DCMAKE_BUILD_TYPE:STRING=Release -DENABLE_IPV6:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES="C:\\libs\\64\\libxml2.lib" -DLIBUSB_LIBRARIES="C:\\libs\\64\\libusb-1.0.lib" -DLIBSERIALPORT_LIBRARIES="C:\\libs\\64\\libserialport.dll.a" -DCMAKE_SYSTEM_PREFIX_PATH="C:" .. 2>&1'
-        } else {
+    #      cmd /C 'cmake -G "Visual Studio 12 Win64" -DCMAKE_BUILD_TYPE:STRING=Release -DENABLE_IPV6:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES="C:\\libs\\64\\libxml2.lib" -DLIBUSB_LIBRARIES="C:\\libs\\64\\libusb-1.0.lib" -DLIBSERIALPORT_LIBRARIES="C:\\libs\\64\\libserialport.dll.a" -DCMAKE_SYSTEM_PREFIX_PATH="C:" .. 2>&1'
+   #     } else {
           
-          C:\msys64\usr\bin\bash.exe -lc 'cmake -G "%GENERATOR%" -DWITH_TESTS:BOOL=OFF -DWITH_DOC:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF .. 2>&1'
-        }
-  - cd ..
+         # C:\msys64\usr\bin\bash.exe -lc 'cmake -G "%GENERATOR%" -DWITH_TESTS:BOOL=OFF -DWITH_DOC:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF .. 2>&1'
+        #}
+  #- cd ..
 
 build_script:
-  - ps: |
-        if ($env:BUILD_TYPE -eq 'msvc') {
-          # https://www.appveyor.com/docs/build-phase
-          msbuild msvc_build/citra.sln /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-        } else {
-          C:\msys64\usr\bin\bash.exe -lc 'make -j install -C mingw_build/ 2>&1'
-        }
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DWITH_TESTS:BOOL=OFF -DWITH_DOC:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF .. && make -j3")
+  #- ps: |
+   #     if ($env:BUILD_TYPE -eq 'msvc') {
+    #      # https://www.appveyor.com/docs/build-phase
+     #     msbuild msvc_build/citra.sln /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+      #  } else {
+       #   C:\msys64\usr\bin\bash.exe -lc 'make -j install -C mingw_build/ 2>&1'
+       # }
 
-artifacts:
-  - path: $(BUILD_ZIP)
-    name: build
-    type: zip
-  - path: $(BUILD_SYMBOLS)
-    name: debugsymbols
-  - path: $(BUILD_UPDATE)
-    name: update
