@@ -36,18 +36,9 @@ install:
   - choco install InnoSetup
   - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
   - set PATH=%PATH%;"/bin:/usr/bin:/${COMPILER}/bin:/c/Program\ Files/Git/cmd:/c/Windows/System32"
-  - ps: |
-        if ($env:BUILD_TYPE -eq 'mingw') {
-            $dependencies = $env:COMPILER"/mingw-w64-"$env:ARCH"-gcc,"
-                            $env:COMPILER"/mingw-w64-"$env:ARCH"-cmake,"
-                            $env:COMPILER"/mingw-w64-"$env:ARCH"-libusb,"
-                            $COMPILER"/mingw-w64-"$ARCH"-libxml2"
-            C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S "$env:COMPILER"/mingw-w64-"$env:ARCH"-freetype "$env:COMPILER"/mingw-w64-"$env:ARCH"-fontconfig" 2> $null
-          
-            # redirect err to null to prevent warnings from becoming errors
-            # workaround to prevent pacman from failing due to cyclical dependencie
-            'C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S $dependencies" 2> $null'
-        }
+  - if "%BUILD_TYPE%"=="mingw" (set DEPENDENCIES=%COMPILER%"/mingw-w64-"%ARCH%"-gcc,"%COMPILER%"/mingw-w64-"%ARCH%"-cmake,"%COMPILER%"/mingw-w64-"%ARCH%"-libusb,"%COMPILER%"/mingw-w64-"%ARCH%"-libxml2")
+  - if "%BUILD_TYPE%"=="mingw" ('C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S "%COMPILER%"/mingw-w64-"%ARCH%"-freetype "%COMPILER%"/mingw-w64-"%ARCH%"-fontconfig" 2> $null')
+  - if "%BUILD_TYPE%"=="mingw" ('C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S "%DEPENDENCIES% 2> $null')
 
 before_build:
   - mkdir %BUILD_TYPE%_%platform%_build
