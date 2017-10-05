@@ -10,10 +10,10 @@ environment:
   # Tell msys2 to inherit the current directory when starting the shell
   CHERE_INVOKING: 1
   matrix:
-    - BUILD_TYPE: mingw
-      GENERATOR: Unix Makefiles
     - BUILD_TYPE: msvc
       GENERATOR: Visual Studio 12
+    - BUILD_TYPE: mingw
+      GENERATOR: Unix Makefiles
 
 platform:
   - x64
@@ -57,8 +57,9 @@ build_script:
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_INSTALL_PREFIX=/%COMPILER% -DCMAKE_C_COMPILER:FILEPATH=/%COMPILER%/bin/%ARCH%-w64-mingw32-gcc.exe -DCMAKE_CXX_COMPILER:FILEPATH=/%COMPILER%/bin/%ARCH%-w64-mingw32-g++.exe -DPKG_CONFIG_EXECUTABLE:FILEPATH=/%COMPILER%/bin/pkg-config.exe -DENABLE_IPV6:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES=c/libs/%platform_no%/libxml2.dll -DLIBSERIALPORT_LIBRARIES=c/libs/%platform_no%/libserialport.dll.a /c/projects/libiio && make -j3")
   
   - if "%BUILD_TYPE%"=="msvc" (mkdir c:\projects\libiio\build-%ARCH%& cd c:\projects\libiio\build-%ARCH%)
-  - if "%ARCH%"=="Win32" (set MCS_EXECUTABLE_PATH="C:\Windows\Microsoft.NET\Framework\v4.0.30319")
+  - if "%BUILD_TYPE%"=="msvc" (set MCS_EXECUTABLE_PATH="C:\Windows\Microsoft.NET\Framework\v4.0.30319")
   - if "%ARCH%"=="Win64" (set GENERATOR=%GENERATOR%" "%ARCH%)
+  - echo %GENERATOR% ...
   - if "%BUILD_TYPE%"=="msvc" (cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE:STRING="%configuration%" -DENABLE_IPV6:BOOL=OFF -DCMAKE_SYSTEM_PREFIX_PATH="C:" -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES="C:\\libs\\%platform_no%\\libxml2.lib" -DLIBUSB_LIBRARIES="C:\\libs\\%platform_no%\\libusb-1.0.lib" -DLIBSERIALPORT_LIBRARIES="C:\\libs\\%platform_no%\\libserialport.dll.a" ..)
   - if "%BUILD_TYPE%"=="msvc" (cmake --build . --config %configuration%)
   - if "%BUILD_TYPE%"=="msvc" (ISCC C:\projects\libiio\build-%ARCH%\libiio.iss)
