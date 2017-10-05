@@ -7,6 +7,8 @@ skip_commits:
 environment:
   # Tell msys2 to add mingw64 to the path
   MSYSTEM: MINGW64
+  # Tell msys2 to inherit the current directory when starting the shell
+  CHERE_INVOKING: 1
   matrix:
     - COMPILER: msvc
       GENERATOR: Visual Studio 12
@@ -32,11 +34,9 @@ install:
   - choco install InnoSetup
   
   - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
-  - if "%COMPILER%"=="mingw" (set OPT_PATH=C:\msys64\mingw64\bin;)
+  - if "%COMPILER%"=="mingw" (set OPT_PATH=C:\msys64\mingw32\bin;C:\msys64\mingw64\bin;)
   - set PATH=%OPT_PATH%%PATH%
-  - if "%COMPILER%"=="mingw" (set OPT_PATH=C:\msys64\mingw32\bin;)
-  - set PATH=%OPT_PATH%%PATH%
-
+  
   - if "%COMPILER%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syu")
   - if "%COMPILER%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-x86_64-gcc-ada mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-gcc-libgfortran mingw-w64-x86_64-gcc-objc")
   - if "%COMPILER%"=="mingw" (C:\msys64\usr\bin\bash -lc "rm /mingw64/etc/gdbinit")
