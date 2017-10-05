@@ -22,14 +22,12 @@ configuration:
   - Release
 
 install:
-  - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x64" (set COMPILER=mingw64& set ARCH=x86_64)
-  - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x86" (set COMPILER=mingw32& set ARCH=i686)
+  - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x64" (set COMPILER=mingw64& set ARCH=x86_64& set platform_no=64)
+  - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x86" (set COMPILER=mingw32& set ARCH=i686& set platform_no=32)
   - echo %COMPILER%...
   - echo %ARCH%
   - echo "Checking out sub-modules..."
-  - echo C:\msys64\usr\bin\bash -lc "pwd"
   - cd c:\projects
-  - echo C:\msys64\usr\bin\bash -lc "pwd"
   - git clone --depth 1 https://github.com/analogdevicesinc/libiio.git
   #- git submodule update --init
   - echo "Downloading deps..."
@@ -42,7 +40,7 @@ install:
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syu")
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-%ARCH%-gcc-ada mingw-w64-%ARCH%-gcc-fortran mingw-w64-%ARCH%-gcc-libgfortran mingw-w64-%ARCH%-gcc-objc")
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "rm /%COMPILER%/etc/gdbinit")
-  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy  mingw-w64-%ARCH%-gcc mingw-w64-%ARCH%-libusb mingw-w64-%ARCH%-cmake mingw-w64-%ARCH%-libxml2")
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy  mingw-w64-%ARCH%-gcc mingw-w64-%ARCH%-libusb mingw-w64-%ARCH%-cmake mingw-w64-%ARCH%-libxml2 mingw-w64-%ARCH%-pkg-config mingw-w64-%ARCH%-libzip mingw-w64-%ARCH%-doxygen")
  
   #Install Inno Setup
   - choco install InnoSetup
@@ -59,15 +57,8 @@ before_build:
           
          # C:\msys64\usr\bin\bash.exe -lc 'cmake -G "%GENERATOR%" -DWITH_TESTS:BOOL=OFF -DWITH_DOC:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF .. 2>&1'
         #}
-  #- cd ..
 
 build_script:
-  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DWITH_TESTS:BOOL=OFF -DWITH_DOC:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF /c/projects/libiio && make -j3")
-  #- ps: |
-   #     if ($env:BUILD_TYPE -eq 'msvc') {
-    #      # https://www.appveyor.com/docs/build-phase
-     #     msbuild msvc_build/citra.sln /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-      #  } else {
-       #   C:\msys64\usr\bin\bash.exe -lc 'make -j install -C mingw_build/ 2>&1'
-       # }
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DCMAKE_BUILD_TYPE:STRING=%configuration% -DENABLE_IPV6:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES=c/libs/%platform_no%/libxml2.lib -DLIBUSB_LIBRARIES=c/libs/%platform_no%/libusb-1.0.lib -DLIBSERIALPORT_LIBRARIES=c/libs/%platform_no%/libserialport.dll.a /c/projects/libiio && make -j3")
+
 
