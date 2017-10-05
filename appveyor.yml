@@ -58,7 +58,7 @@ build_script:
   
   - if "%BUILD_TYPE%"=="msvc" (mkdir c:\projects\libiio\build-%ARCH%& cd c:\projects\libiio\build-%ARCH%)
   - if "%BUILD_TYPE%"=="msvc" (set MCS_EXECUTABLE_PATH="C:\Windows\Microsoft.NET\Framework\v4.0.30319")
-  - if "%ARCH%"=="Win64" (set GENERATOR=%GENERATOR%" "%ARCH%)
+  - if "%ARCH%"=="Win64" (set GENERATOR=%GENERATOR% %ARCH%)
   - echo %GENERATOR% ...
   - if "%BUILD_TYPE%"=="msvc" (cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE:STRING="%configuration%" -DENABLE_IPV6:BOOL=OFF -DCMAKE_SYSTEM_PREFIX_PATH="C:" -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES="C:\\libs\\%platform_no%\\libxml2.lib" -DLIBUSB_LIBRARIES="C:\\libs\\%platform_no%\\libusb-1.0.lib" -DLIBSERIALPORT_LIBRARIES="C:\\libs\\%platform_no%\\libserialport.dll.a" ..)
   - if "%BUILD_TYPE%"=="msvc" (cmake --build . --config %configuration%)
