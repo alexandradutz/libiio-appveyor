@@ -24,14 +24,14 @@ configuration:
 install:
   - if "%BUILD_TYPE%"=="mingw" (
       IF "%platform%"=="x64" (
-          set COMPILER="mingw64"
-          set ARCH="x86_64"
+          ' set COMPILER="mingw64"'
+          ' set ARCH="x86_64"'
       )
     )
   - if "%BUILD_TYPE%"=="mingw" (
       IF "%platform%"=="x86" (
-          set COMPILER="mingw32"
-          set ARCH="i686"
+          ' set COMPILER="mingw32"'
+          ' set ARCH="i686"'
       )
     )
   - echo %COMPILER%
@@ -47,11 +47,11 @@ install:
   - set PATH=%PATH%;"/bin:/usr/bin:/${COMPILER}/bin:/c/Program\ Files/Git/cmd:/c/Windows/System32"
   - ps: |
         if ($env:BUILD_TYPE -eq 'mingw') {
-            $dependencies = "%COMPILER%/mingw-w64-%ARCH%-gcc",
-                            "%COMPILER%/mingw-w64-%ARCH%-cmake",
-                            "%COMPILER%/mingw-w64-%ARCH%-libusb",
-                            "%COMPILER%/mingw-w64-%ARCH%-libxml2"
-            C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S %COMPILER%/mingw-w64-%ARCH%-freetype %COMPILER%/mingw-w64-%ARCH%-fontconfig" 2> $null
+            $dependencies = %COMPILER%"/mingw-w64-"%ARCH%"-gcc",
+                            %COMPILER%"/mingw-w64-"%ARCH%"-cmake",
+                            %COMPILER%"/mingw-w64-"%ARCH%"-libusb",
+                            %COMPILER%"/mingw-w64-"%ARCH%"-libxml2"
+            C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S '%COMPILER%"/mingw-w64-"%ARCH%"-freetype "%COMPILER%"/mingw-w64-"%ARCH%"-fontconfig" 2> $null
           
             # redirect err to null to prevent warnings from becoming errors
             # workaround to prevent pacman from failing due to cyclical dependencie
