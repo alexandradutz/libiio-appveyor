@@ -25,8 +25,8 @@ install:
   - if "%BUILD_TYPE%"=="mingw" (
       IF "%platform%"=="x64" set COMPILER="mingw64"
       IF "%platform%"=="x86" set COMPILER="mingw32"
-      IF "%platform%"=='x64" set ARCH="x86_64"
-      IF "%platform%"=='x86" set ARCH="i686"
+      IF "%platform%"=="x64" set ARCH="x86_64"
+      IF "%platform%"=="x86" set ARCH="i686"
     )
   - echo %COMPILER%
   - echo %ARCH%
@@ -42,15 +42,15 @@ install:
   - set PATH=%PATH%;"/bin:/usr/bin:/${COMPILER}/bin:/c/Program\ Files/Git/cmd:/c/Windows/System32"
   - ps: |
         if ($env:BUILD_TYPE -eq 'mingw') {
-            $dependencies = %COMPILER%"/mingw-w64-"%ARCH%"-gcc",
-                            %COMPILER%"/mingw-w64-"%ARCH%"-cmake",
-                            %COMPILER%"/mingw-w64-"%ARCH%"-libusb",
+            $dependencies = %COMPILER%"/mingw-w64-"%ARCH%"-gcc,"
+                            %COMPILER%"/mingw-w64-"%ARCH%"-cmake,"
+                            %COMPILER%"/mingw-w64-"%ARCH%"-libusb,"
                             %COMPILER%"/mingw-w64-"%ARCH%"-libxml2"
-            C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S '%COMPILER%"/mingw-w64-"%ARCH%"-freetype "%COMPILER%"/mingw-w64-"%ARCH%"-fontconfig" 2> $null
+            C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S "%COMPILER%"/mingw-w64-"%ARCH%"-freetype "%COMPILER%"/mingw-w64-"%ARCH%"-fontconfig" 2> $null
           
             # redirect err to null to prevent warnings from becoming errors
             # workaround to prevent pacman from failing due to cyclical dependencie
-            C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S $dependencies" 2> $null
+            'C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S $dependencies" 2> $null'
         }
 
 before_build:
@@ -63,7 +63,7 @@ before_build:
           cmd /C 'cmake -G "Visual Studio 12 Win64" -DCMAKE_BUILD_TYPE:STRING=Release -DENABLE_IPV6:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES="C:\\libs\\64\\libxml2.lib" -DLIBUSB_LIBRARIES="C:\\libs\\64\\libusb-1.0.lib" -DLIBSERIALPORT_LIBRARIES="C:\\libs\\64\\libserialport.dll.a" -DCMAKE_SYSTEM_PREFIX_PATH="C:" .. 2>&1'
         } else {
           
-          C:\msys64\usr\bin\bash.exe -lc "cmake -G "%GENERATOR%" -DWITH_TESTS:BOOL=OFF -DWITH_DOC:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF .. 2>&1"
+          C:\msys64\usr\bin\bash.exe -lc 'cmake -G "%GENERATOR%" -DWITH_TESTS:BOOL=OFF -DWITH_DOC:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF .. 2>&1'
         }
   - cd ..
 
