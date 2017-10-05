@@ -59,7 +59,7 @@ before_build:
   #- cd ..
 
 build_script:
-  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DWITH_TESTS:BOOL=OFF -DWITH_DOC:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF .. && make -j3")
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DWITH_TESTS:BOOL=OFF -DWITH_DOC:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF /c/libiio && make -j3")
   #- ps: |
    #     if ($env:BUILD_TYPE -eq 'msvc') {
     #      # https://www.appveyor.com/docs/build-phase
