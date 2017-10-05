@@ -1,3 +1,4 @@
+version: 2015.1.{build}
 clone_depth: 1
 
 skip_commits:
@@ -24,6 +25,8 @@ configuration:
 install:
   - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x64" (set COMPILER=mingw64& set ARCH=x86_64& set platform_no=64)
   - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x86" (set COMPILER=mingw32& set ARCH=i686& set platform_no=32)
+  - if "%BUILD_TYPE%"=="msvc" if "%platform%"=="x64" (set COMPILER=msvc& set ARCH=Win64& set platform_no=64)
+  - if "%BUILD_TYPE%"=="msvc" if "%platform%"=="x86" (set COMPILER=msvc& set ARCH=Win32& set platform_no=32)
   - echo %COMPILER%...
   - echo %ARCH%
   - echo "Checking out sub-modules..."
@@ -34,31 +37,35 @@ install:
   - cd c:\
   - appveyor DownloadFile http://swdownloads.analog.com/cse/build/libiio-win-deps.zip
   - 7z x -y "c:\libiio-win-deps.zip"
-
+  #Install Inno Setup
+  - choco install InnoSetup
+  
   - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
-  - set PATH=%PATH%;"C:\msys64\usr\bin\%COMPILER%"
+  - if "%BUILD_TYPE%"=="mingw" (set PATH=%PATH%;"C:\msys64\usr\bin\%COMPILER%")
+  
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syu")
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-%ARCH%-gcc-ada mingw-w64-%ARCH%-gcc-fortran mingw-w64-%ARCH%-gcc-libgfortran mingw-w64-%ARCH%-gcc-objc")
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "rm /%COMPILER%/etc/gdbinit")
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy  mingw-w64-%ARCH%-gcc mingw-w64-%ARCH%-libusb mingw-w64-%ARCH%-cmake mingw-w64-%ARCH%-libxml2 mingw-w64-%ARCH%-pkg-config mingw-w64-%ARCH%-libzip mingw-w64-%ARCH%-doxygen")
- 
-  #Install Inno Setup
-  - choco install InnoSetup
 
 before_build:
   - mkdir %BUILD_TYPE%_%platform%_build
   - cd %BUILD_TYPE%_%platform%_build
-  #- ps: |
-     #   if ($env:BUILD_TYPE -eq 'msvc') {
-          # redirect stderr and change the exit code to prevent powershell from cancelling the build if cmake prints a warning
-          # cmd /C 'cmake -G "Visual Studio 15 2017 Win64" -DCITRA_USE_BUNDLED_QT=1 -DCITRA_USE_BUNDLED_SDL2=1 -DCMAKE_USE_OPENSSL=0 .. 2>&1 && exit 0'
-    #      cmd /C 'cmake -G "Visual Studio 12 Win64" -DCMAKE_BUILD_TYPE:STRING=Release -DENABLE_IPV6:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES="C:\\libs\\64\\libxml2.lib" -DLIBUSB_LIBRARIES="C:\\libs\\64\\libusb-1.0.lib" -DLIBSERIALPORT_LIBRARIES="C:\\libs\\64\\libserialport.dll.a" -DCMAKE_SYSTEM_PREFIX_PATH="C:" .. 2>&1'
-   #     } else {
-          
-         # C:\msys64\usr\bin\bash.exe -lc 'cmake -G "%GENERATOR%" -DWITH_TESTS:BOOL=OFF -DWITH_DOC:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF .. 2>&1'
-        #}
 
 build_script:
-  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_INSTALL_PREFIX=/%COMPILER% -DCMAKE_C_COMPILER:FILEPATH=/%COMPILER%/bin/%ARCH%-w64-mingw32-gcc.exe -DCMAKE_CXX_COMPILER:FILEPATH=/%COMPILER%/bin/%ARCH%-w64-mingw32-g++.exe-DPKG_CONFIG_EXECUTABLE:FILEPATH=/%COMPILER%/bin/pkg-config.exe -DENABLE_IPV6:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES=c/libs/%platform_no%/libxml2.lib -DLIBSERIALPORT_LIBRARIES=c/libs/%platform_no%/libserialport.dll.a /c/projects/libiio && make -j3")
-
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_INSTALL_PREFIX=/%COMPILER% -DCMAKE_C_COMPILER:FILEPATH=/%COMPILER%/bin/%ARCH%-w64-mingw32-gcc.exe -DCMAKE_CXX_COMPILER:FILEPATH=/%COMPILER%/bin/%ARCH%-w64-mingw32-g++.exe -DPKG_CONFIG_EXECUTABLE:FILEPATH=/%COMPILER%/bin/pkg-config.exe -DENABLE_IPV6:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES=c/libs/%platform_no%/libxml2.dll -DLIBSERIALPORT_LIBRARIES=c/libs/%platform_no%/libserialport.dll.a /c/projects/libiio && make -j3")
+  
+  - if "%BUILD_TYPE%"=="msvc" (mkdir c:\projects\libiio\build-%ARCH%& cd c:\projects\libiio\build-%ARCH%)
+  - if "%ARCH%"=="Win32" (set MCS_EXECUTABLE_PATH="C:\Windows\Microsoft.NET\Framework\v4.0.30319")
+  - if "%ARCH%"=="Win64" (set GENERATOR=%GENERATOR%" "%ARCH%)
+  - cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE:STRING="%configuration%" \
+      -DENABLE_IPV6:BOOL=OFF -DCMAKE_SYSTEM_PREFIX_PATH="C:" \
+      -DPYTHON_BINDINGS:BOOL=OFF \
+      -DLIBXML2_LIBRARIES="C:\\libs\\%platform_no%\\libxml2.lib" \
+      -DLIBUSB_LIBRARIES="C:\\libs\\%platform_no%\\libusb-1.0.lib" \
+      -DLIBSERIALPORT_LIBRARIES="C:\\libs\\%platform_no%\\libserialport.dll.a" \
+      ..
+  - cmake --build . --config %configuration%
+  - ISCC C:\projects\libiio\build-%ARCH%\libiio.iss
+  - appveyor PushArtifact C:\libiio-setup.exe
 
