@@ -40,7 +40,7 @@ install:
   #- if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-"%ARCH%"-freetype mingw-w64-"%ARCH%"-fontconfig" > nul)
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syu")
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-x86_64-gcc-ada mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-gcc-libgfortran mingw-w64-x86_64-gcc-objc")
-  - if "%BUILD_TYPE%"=="mingw" (rm /%COMPILER%/etc/gdbinit)
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "rm /%COMPILER%/etc/gdbinit")
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy "%DEPENDENCIES%)
 
 before_build:
