@@ -10,10 +10,10 @@ environment:
   # Tell msys2 to inherit the current directory when starting the shell
   CHERE_INVOKING: 1
   matrix:
-    - COMPILER: msvc
-      GENERATOR: Visual Studio 12
     - COMPILER: mingw
       GENERATOR: Unix Makefiles
+    - COMPILER: msvc
+      GENERATOR: Visual Studio 12
 
 configuration:
   - Release
