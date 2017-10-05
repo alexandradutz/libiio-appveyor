@@ -34,6 +34,9 @@ install:
   - cd c:\
   - appveyor DownloadFile http://swdownloads.analog.com/cse/build/libiio-win-deps.zip
   - 7z x -y "c:\libiio-win-deps.zip"
+  - cd c:\libs
+  - set P=(C:\msys64\usr\bin\bash -lc "pwd")
+  - echo %P%
 
   - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
   - set PATH=%PATH%;"C:\msys64\usr\bin\%COMPILER%"
@@ -59,6 +62,6 @@ before_build:
         #}
 
 build_script:
-  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DCMAKE_BUILD_TYPE:STRING=%configuration% -DENABLE_IPV6:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES=c/libs/%platform_no%/libxml2.lib -DLIBUSB_LIBRARIES=c/libs/%platform_no%/libusb-1.0.lib -DLIBSERIALPORT_LIBRARIES=c/libs/%platform_no%/libserialport.dll.a /c/projects/libiio && make -j3")
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_INSTALL_PREFIX=/%COMPILER% -DCMAKE_C_COMPILER:FILEPATH=/%COMPILER%/bin/%ARCH%-w64-mingw32-gcc.exe -DCMAKE_CXX_COMPILER:FILEPATH=/%COMPILER%/bin/%ARCH%-w64-mingw32-g++.exe-DPKG_CONFIG_EXECUTABLE:FILEPATH=/%COMPILER%/bin/pkg-config.exe -DENABLE_IPV6:BOOL=OFF -DWITH_MATLAB_BINDINGS:BOOL=OFF -DCSHARP_BINDINGS:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES=c/libs/%platform_no%/libxml2.lib -DLIBUSB_LIBRARIES=c/libs/%platform_no%/libusb-1.0.lib -DLIBSERIALPORT_LIBRARIES=c/libs/%platform_no%/libserialport.dll.a /c/projects/libiio && make -j3")
 
 
