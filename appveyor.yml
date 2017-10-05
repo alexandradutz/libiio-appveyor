@@ -27,6 +27,9 @@ install:
   - echo %COMPILER%...
   - echo %ARCH%
   - echo "Checking out sub-modules..."
+  - echo C:\msys64\usr\bin\bash -lc "pwd"
+  - cd c:\projects
+  - echo C:\msys64\usr\bin\bash -lc "pwd"
   - git clone --depth 1 https://github.com/analogdevicesinc/libiio.git
   #- git submodule update --init
   - echo "Downloading deps..."
