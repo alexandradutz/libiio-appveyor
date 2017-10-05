@@ -2,11 +2,10 @@ clone_depth: 1
 
 skip_commits:
   message: /(iiod|IIOD):.*/
-	
+    
 environment:
   # Tell msys2 to add mingw64 to the path
   MSYSTEM: MINGW64
-  MSYSTEM: MINGW32
   # Tell msys2 to inherit the current directory when starting the shell
   CHERE_INVOKING: 1
   matrix:
@@ -33,20 +32,20 @@ install:
   - export PATH=/bin:/usr/bin:/${MINGW_VERSION}/bin:/c/Program\ Files/Git/cmd:/c/Windows/System32
   - ps: |
         if ($env:BUILD_TYPE -eq 'mingw') {
-		  if ($env:platform -eq 'x64') {
-		    $dependencies = "mingw64/mingw-w64-x86_64-gcc",
+          if ($env:platform -eq 'x64') {
+            $dependencies = "mingw64/mingw-w64-x86_64-gcc",
                             "mingw64/mingw-w64-x86_64-cmake",
                             "mingw64/mingw-w64-x86_64-libusb",
                             "mingw64/mingw-w64-x86_64-libxml2"
-			C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw64/mingw-w64-x86_64-freetype mingw64/mingw-w64-x86_64-fontconfig" 2> $null
-		  }
-		  if ($env:platform -eq 'x86') {
-		    $dependencies = "mingw64/mingw-w64-i686-gcc",
+            C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw64/mingw-w64-x86_64-freetype mingw64/mingw-w64-x86_64-fontconfig" 2> $null
+          }
+          if ($env:platform -eq 'x86') {
+            $dependencies = "mingw64/mingw-w64-i686-gcc",
                             "mingw64/mingw-w64-i686-cmake",
                             "mingw64/mingw-w64-i686-libusb",
                             "mingw64/mingw-w64-i686-libxml2"
-			C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw64/mingw-w64-i686-freetype mingw64/mingw-w64-i686-fontconfig" 2> $null
-		  }
+            C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw64/mingw-w64-i686-freetype mingw64/mingw-w64-i686-fontconfig" 2> $null
+          }
           
           # redirect err to null to prevent warnings from becoming errors
           # workaround to prevent pacman from failing due to cyclical dependencie
