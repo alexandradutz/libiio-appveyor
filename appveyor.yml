@@ -37,8 +37,9 @@ install:
   - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
   - set PATH=%PATH%;"/bin:/usr/bin:/${COMPILER}/bin:/c/Program\ Files/Git/cmd:/c/Windows/System32"
   - if "%BUILD_TYPE%"=="mingw" (set DEPENDENCIES=%COMPILER%"/mingw-w64-"%ARCH%"-gcc,"%COMPILER%"/mingw-w64-"%ARCH%"-cmake,"%COMPILER%"/mingw-w64-"%ARCH%"-libusb,"%COMPILER%"/mingw-w64-"%ARCH%"-libxml2")
-  - if "%BUILD_TYPE%"=="mingw" ('C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S "%COMPILER%"/mingw-w64-"%ARCH%"-freetype "%COMPILER%"/mingw-w64-"%ARCH%"-fontconfig" 2> $null')
-  - if "%BUILD_TYPE%"=="mingw" ('C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S "%DEPENDENCIES% 2> $null')
+  - echo %DEPENDENCIES%
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S "%COMPILER%"/mingw-w64-"%ARCH%"-freetype "%COMPILER%"/mingw-w64-"%ARCH%"-fontconfig" 2> $null)
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S "%DEPENDENCIES% 2> $null)
 
 before_build:
   - mkdir %BUILD_TYPE%_%platform%_build
