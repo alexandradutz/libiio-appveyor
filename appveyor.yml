@@ -22,13 +22,17 @@ configuration:
   - Release
 
 install:
-  - if "%BUILD_TYPE%"=="mingw" AND IF "%platform%"=="x64" (
-      set COMPILER="mingw64"
-      set ARCH="x86_64"
+  - if "%BUILD_TYPE%"=="mingw" (
+      IF "%platform%"=="x64" (
+          set COMPILER="mingw64"
+          set ARCH="x86_64"
+      )
     )
-  - if "%BUILD_TYPE%"=="mingw" AND IF "%platform%"=="x86" (
-      set COMPILER="mingw32"
-      set ARCH="i686"
+  - if "%BUILD_TYPE%"=="mingw" (
+      IF "%platform%"=="x86" (
+          set COMPILER="mingw32"
+          set ARCH="i686"
+      )
     )
   - echo "Checking out sub-modules..."
   - git clone --depth 1 https://github.com/analogdevicesinc/libiio.git
