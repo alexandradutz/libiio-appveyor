@@ -41,7 +41,7 @@ install:
   - choco install InnoSetup
   
   - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
-  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "set PATH=%PATH%;C:\msys64\usr\bin\%COMPILER%")
+  - if "%BUILD_TYPE%"=="mingw" (set PATH=C:\msys64\%COMPILER%\bin;%PATH%)
   
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syu")
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-%ARCH%-gcc-ada mingw-w64-%ARCH%-gcc-fortran mingw-w64-%ARCH%-gcc-libgfortran mingw-w64-%ARCH%-gcc-objc")
