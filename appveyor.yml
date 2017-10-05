@@ -37,8 +37,9 @@ install:
   - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
   - if "%BUILD_TYPE%"=="mingw" (set DEPENDENCIES=mingw-w64-%ARCH%-gcc,mingw-w64-%ARCH%-cmake,mingw-w64-%ARCH%-libusb,mingw-w64-%ARCH%-libxml2)
   #- if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-"%ARCH%"-freetype mingw-w64-"%ARCH%"-fontconfig" > nul)
-  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-x86_64-gcc-ada mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-gcc-libgfortran mingw-w64-x86_64-gcc-objc" > nul)
-  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy "%DEPENDENCIES% > nul)
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Syu")
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-x86_64-gcc-ada mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-gcc-libgfortran mingw-w64-x86_64-gcc-objc")
+  - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy "%DEPENDENCIES%)
 
 before_build:
   - mkdir %BUILD_TYPE%_%platform%_build
