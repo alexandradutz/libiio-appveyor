@@ -35,7 +35,8 @@ install:
   - 7z x -y "c:\libiio-win-deps.zip" > nul
   - choco install InnoSetup
   - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
-  - if "%BUILD_TYPE%"=="mingw" (set DEPENDENCIES=%COMPILER%/mingw-w64-%ARCH%-gcc,%COMPILER%/mingw-w64-%ARCH%-cmake,%COMPILER%/mingw-w64-%ARCH%-libusb,%COMPILER%/mingw-w64-%ARCH%-libxml2)
+  - set PATH=%PATH%;"C:\msys64\usr\bin\mingw64"
+  - if "%BUILD_TYPE%"=="mingw" (set DEPENDENCIES=mingw-w64-%ARCH%-gcc,mingw-w64-%ARCH%-cmake,mingw-w64-%ARCH%-libusb,mingw-w64-%ARCH%-libxml2)
   #- if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-"%ARCH%"-freetype mingw-w64-"%ARCH%"-fontconfig" > nul)
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syu")
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-x86_64-gcc-ada mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-gcc-libgfortran mingw-w64-x86_64-gcc-objc")
