@@ -32,7 +32,9 @@ install:
   - echo "Checking out sub-modules..."
   - cd c:\projects
   - git clone --depth 1 https://github.com/analogdevicesinc/libiio.git
-  #- git submodule update --init
+  - cd c:\projects\libiio
+  - git submodule update --init
+  - cd ..
   - echo "Downloading deps..."
   - cd c:\
   - appveyor DownloadFile http://swdownloads.analog.com/cse/build/libiio-win-deps.zip
