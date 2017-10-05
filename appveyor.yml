@@ -22,8 +22,8 @@ configuration:
   - Release
 
 install:
-  - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x64" (set COMPILER="mingw64" & set ARCH="x86_64")
-  - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x86" (set COMPILER="mingw32" & set ARCH="i686")
+  - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x64" (set COMPILER=mingw64 & set ARCH=x86_64)
+  - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x86" (set COMPILER=mingw32 & set ARCH=i686)
   - echo %COMPILER%
   - echo %ARCH%
   - echo "Checking out sub-modules..."
@@ -36,7 +36,7 @@ install:
   - choco install InnoSetup
   - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
   - set PATH=%PATH%;"/bin:/usr/bin:/${COMPILER}/bin:/c/Program\ Files/Git/cmd:/c/Windows/System32"
-  - if "%BUILD_TYPE%"=="mingw" (set DEPENDENCIES=%COMPILER%"/mingw-w64-"%ARCH%"-gcc,"%COMPILER%"/mingw-w64-"%ARCH%"-cmake,"%COMPILER%"/mingw-w64-"%ARCH%"-libusb,"%COMPILER%"/mingw-w64-"%ARCH%"-libxml2")
+  - if "%BUILD_TYPE%"=="mingw" (set DEPENDENCIES=%COMPILER%/mingw-w64-%ARCH%-gcc,%COMPILER%/mingw-w64-%ARCH%-cmake,%COMPILER%/mingw-w64-%ARCH%-libusb,%COMPILER%/mingw-w64-%ARCH%-libxml2)
   - echo %DEPENDENCIES%
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S "%COMPILER%"/mingw-w64-"%ARCH%"-freetype "%COMPILER%"/mingw-w64-"%ARCH%"-fontconfig" 2> $null)
   - if "%BUILD_TYPE%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S "%DEPENDENCIES% 2> $null)
