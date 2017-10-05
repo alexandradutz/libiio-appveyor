@@ -22,20 +22,8 @@ configuration:
   - Release
 
 install:
-  - if "%BUILD_TYPE%"=="mingw" (
-        if "%platform%"=="x64" (
-            set COMPILER="mingw64"
-        )
-        if "%platform%"=="x86" (
-            set COMPILER="mingw32"
-        )
-        if "%platform%"=="x64" (
-            set ARCH="x86_64"
-        )
-        if "%platform%"=="x86" (
-            set ARCH="i686"
-        )
-    )
+  - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x64" (set COMPILER="mingw64" & set ARCH="x86_64")
+  - if "%BUILD_TYPE%"=="mingw" if "%platform%"=="x86" (set COMPILER="mingw32" & set ARCH="i686")
   - echo %COMPILER%
   - echo %ARCH%
   - echo "Checking out sub-modules..."
