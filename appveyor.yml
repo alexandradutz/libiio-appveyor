@@ -75,10 +75,10 @@ build_script:
   - if "%COMPILER%"=="msvc" (cmake -G "%GENERATOR% Win64" -DCMAKE_BUILD_TYPE:STRING="%configuration%" -DENABLE_IPV6:BOOL=OFF -DCMAKE_SYSTEM_PREFIX_PATH="C:" -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES="C:\\libs\\64\\libxml2.lib" -DLIBUSB_LIBRARIES="C:\\libs\\64\\libusb-1.0.lib" -DLIBSERIALPORT_LIBRARIES="C:\\libs\\64\\libserialport.dll.a" ..)
   - if "%COMPILER%"=="msvc" (cmake --build . --config %configuration%)
   
-  # Move the test folder
+  # Move the tests folder
   - cd c:\projects\libiio
-  - if "%COMPILER%"=="mingw" (copy build-win32\Release\tests\Release\*.exe build-win32\tests\Release\)
-  - if "%COMPILER%"=="mingw" (copy build-win64\Release\tests\Release\*.exe build-win64\tests\Release\)
+  - if "%COMPILER%"=="mingw" (copy build-win32\Release\tests\*.exe build-win32\tests\Release\)
+  - if "%COMPILER%"=="mingw" (copy build-win64\Release\tests\*.exe build-win64\tests\Release\)
   
   - ISCC %folder-path%\libiio.iss
   - appveyor PushArtifact C:\libiio-setup.exe
