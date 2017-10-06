@@ -41,6 +41,8 @@ install:
   
 build_script:
   - cd c:\projects\libiio
+  - set folder-path=c:\projects\libiio\build-win32
+  - if "%COMPILER%"=="mingw" (set folder-path=%folder-path%\%configuration%)
   - echo "Running cmake for MinGW 32 bit... "
   - mkdir build-win32
   - cd build-win32
@@ -73,6 +75,6 @@ build_script:
   - if "%COMPILER%"=="msvc" (cmake -G "%GENERATOR% Win64" -DCMAKE_BUILD_TYPE:STRING="%configuration%" -DENABLE_IPV6:BOOL=OFF -DCMAKE_SYSTEM_PREFIX_PATH="C:" -DPYTHON_BINDINGS:BOOL=OFF -DLIBXML2_LIBRARIES="C:\\libs\\64\\libxml2.lib" -DLIBUSB_LIBRARIES="C:\\libs\\64\\libusb-1.0.lib" -DLIBSERIALPORT_LIBRARIES="C:\\libs\\64\\libserialport.dll.a" ..)
   - if "%COMPILER%"=="msvc" (cmake --build . --config %configuration%)
   
-  - ISCC C:\projects\libiio\build-win32\libiio.iss
+  - ISCC %folder-path%\libiio.iss
   - appveyor PushArtifact C:\libiio-setup.exe
 
