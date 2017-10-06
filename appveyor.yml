@@ -77,8 +77,8 @@ build_script:
   
   # Move the tests folder
   - cd c:\projects\libiio
-  - if "%COMPILER%"=="mingw" (copy build-win32\Release\tests\*.exe build-win32\tests\Release\)
-  - if "%COMPILER%"=="mingw" (copy build-win64\Release\tests\*.exe build-win64\tests\Release\)
+  - if "%COMPILER%"=="mingw" (mkdir build-win32\tests\ build-win32\tests\"%configuration%"& copy build-win32\Release\tests\*.exe build-win32\tests\"%configuration%"\)
+  - if "%COMPILER%"=="mingw" (mkdir build-win64\tests\ build-win64\tests\"%configuration%"& copy build-win64\Release\tests\*.exe build-win64\tests\"%configuration%"\)
   
   - ISCC %folder-path%\libiio.iss
   - appveyor PushArtifact C:\libiio-setup.exe
