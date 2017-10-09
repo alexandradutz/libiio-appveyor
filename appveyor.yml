@@ -52,6 +52,8 @@ build_script:
 
     # set LIBIIO_VERSION to current project version determined by cmake
     - if "%COMPILER%"=="mingw" (ps: Set-AppveyorBuildVariable -Name LIBIIO_VERSION -Value (get-content .version))
+    - echo "%PATH%"
+    - echo "%LIBIIO_VERSION%"
 
     #MSVC 32 bit
     - if "%COMPILER%"=="msvc" (set MCS_EXECUTABLE_PATH="C:\Windows\Microsoft.NET\Framework\v4.0.30319")
