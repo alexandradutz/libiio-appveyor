@@ -23,8 +23,9 @@ install:
     - git submodule update --init
     - cd ..
     - echo "Downloading deps..."
-    - cd c:\
+    - cd c:\projects
     - git clone --depth 1 https://github.com/analogdevicesinc/libiio.git 
+    - cd c:\
     - appveyor DownloadFile http://swdownloads.analog.com/cse/build/libiio-win-deps.zip
     - 7z x -y "c:\libiio-win-deps.zip"
     #Install Inno Setup
