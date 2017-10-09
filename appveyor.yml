@@ -31,7 +31,7 @@ install:
     #Install Inno Setup
     - choco install InnoSetup
     - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
-    - if "%COMPILER%"=="mingw" (set OPT_PATH=C:\msys64\mingw32\bin;C:\msys64\mingw64\bin;C:\Program Files\Git;)
+    - if "%COMPILER%"=="mingw" (set OPT_PATH=C:\msys64\mingw32\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Git\bin;)
     - set PATH=%OPT_PATH%%PATH%
     - if "%COMPILER%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syu")
 
