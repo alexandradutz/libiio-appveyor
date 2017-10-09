@@ -24,14 +24,14 @@ install:
     - cd ..
     - echo "Downloading deps..."
     - cd c:\projects
-    - git clone --depth 1 https://github.com/analogdevicesinc/libiio.git 
+    - git clone --depth 1 https://github.com/analogdevicesinc/libiio.git -b mingw-build
     - cd c:\
     - appveyor DownloadFile http://swdownloads.analog.com/cse/build/libiio-win-deps.zip
     - 7z x -y "c:\libiio-win-deps.zip"
     #Install Inno Setup
     - choco install InnoSetup
     - set PATH=%PATH%;"C:\Program Files (x86)\Inno Setup 5"
-    - if "%COMPILER%"=="mingw" (set OPT_PATH=C:\msys64\mingw32\bin;C:\msys64\mingw64\bin;"C:\Program Files\Git";)
+    - if "%COMPILER%"=="mingw" (set OPT_PATH=C:\msys64\mingw32\bin;C:\msys64\mingw64\bin;C:\Program Files\Git;)
     - set PATH=%OPT_PATH%%PATH%
     - if "%COMPILER%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syu")
 
