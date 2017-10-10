@@ -51,7 +51,7 @@ build_script:
     - if "%COMPILER%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-i686-gcc-ada mingw-w64-i686-gcc-fortran mingw-w64-i686-gcc-libgfortran mingw-w64-i686-gcc-objc")
     - if "%COMPILER%"=="mingw" (C:\msys64\usr\bin\bash -lc "rm /mingw32/etc/gdbinit")
     - if "%COMPILER%"=="mingw" (C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy  mingw-w64-i686-gcc mingw-w64-i686-libusb mingw-w64-i686-cmake mingw-w64-i686-libxml2 mingw-w64-i686-pkg-config mingw-w64-i686-libzip mingw-w64-i686-doxygen")
-    - if "%COMPILER%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DCMAKE_CURRENT_SOURCE_DIR=/c/projects/libiio -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_INSTALL_PREFIX=/mingw32 -DCMAKE_C_COMPILER:FILEPATH=/mingw32/bin/i686-w64-mingw32-gcc.exe -DCMAKE_CXX_COMPILER:FILEPATH=/mingw32/bin/i686-w64-mingw32-g++.exe -DCSHARP_BINDINGS:BOOL=OFF -DPKG_CONFIG_EXECUTABLE:FILEPATH=/mingw32/bin/pkg-config.exe -DENABLE_IPV6:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF /c/projects/libiio && make -j3")
+    - if "%COMPILER%"=="mingw" (C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DFORCE_GIT:BOOL=ON -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_INSTALL_PREFIX=/mingw32 -DCMAKE_C_COMPILER:FILEPATH=/mingw32/bin/i686-w64-mingw32-gcc.exe -DCMAKE_CXX_COMPILER:FILEPATH=/mingw32/bin/i686-w64-mingw32-g++.exe -DCSHARP_BINDINGS:BOOL=OFF -DPKG_CONFIG_EXECUTABLE:FILEPATH=/mingw32/bin/pkg-config.exe -DENABLE_IPV6:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF /c/projects/libiio && make -j3")
     # set LIBIIO_VERSION to current project version determined by cmake 
     - ps: >-
         If ($env:COMPILER -Match "mingw") {
