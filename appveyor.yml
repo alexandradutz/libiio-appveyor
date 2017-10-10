@@ -25,6 +25,7 @@ install:
     - echo "Downloading deps..."
     - cd c:\projects
     - git clone --depth 1 https://github.com/alexandradutz/libiio.git -b mingw-build
+    - cd libiio
     - git submodule update --init
     - cd c:\
     - appveyor DownloadFile http://swdownloads.analog.com/cse/build/libiio-win-deps.zip
