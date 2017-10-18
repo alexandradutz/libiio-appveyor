@@ -1,7 +1,5 @@
 version: 2015.1.{build}
 clone_depth: 1
-init:
-    - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 skip_commits:
     message: /(iiod|IIOD):.*/
@@ -83,6 +81,7 @@ build_script:
 
     # Move the tests folder
     - cd c:\projects\libiio
+    - if "%COMPILER%"=="mingw" (C:\msys64\usr\bin\bash -lc "ls build-win32")
     - if "%COMPILER%"=="mingw" (mkdir build-win32\tests\ build-win32\tests\"%configuration%"& copy build-win32\Release\tests\*.exe build-win32\tests\"%configuration%"\)
     - if "%COMPILER%"=="mingw" (mkdir build-win64\tests\ build-win64\tests\"%configuration%"& copy build-win64\Release\tests\*.exe build-win64\tests\"%configuration%"\)
 
@@ -139,6 +138,3 @@ build_script:
     - del c:\%ARCHIVE_NAME%\matlab\CMakeLists.txt
     - 7z a "c:\%ARCHIVE_NAME%.zip" c:\%ARCHIVE_NAME%
     - appveyor PushArtifact c:\%ARCHIVE_NAME%.zip
-
-on_finish:
-    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
