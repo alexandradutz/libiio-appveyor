@@ -39,7 +39,9 @@ build_script:
     - echo "Running cmake for MinGW 32 bit... "
     - mkdir build-mingw-win32
     - cd build-mingw-win32
+    - C:\msys64\usr\bin\bash -lc "pwd"
     - mkdir "%configuration%"& cd "%configuration%"
+    - C:\msys64\usr\bin\bash -lc "pwd"
     - C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-i686-gcc-ada mingw-w64-i686-gcc-fortran mingw-w64-i686-gcc-libgfortran mingw-w64-i686-gcc-objc"
     - C:\msys64\usr\bin\bash -lc "rm /mingw32/etc/gdbinit"
     - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy  mingw-w64-i686-gcc mingw-w64-i686-libusb mingw-w64-i686-cmake mingw-w64-i686-libxml2 mingw-w64-i686-pkg-config mingw-w64-i686-libzip mingw-w64-i686-doxygen"
@@ -51,6 +53,7 @@ build_script:
     - mkdir build-mingw-win64
     - cd build-mingw-win64
     - mkdir "%configuration%"& cd "%configuration%"
+    - C:\msys64\usr\bin\bash -lc "pwd"
     - C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-x86_64-gcc-ada mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-gcc-libgfortran mingw-w64-x86_64-gcc-objc"
     - C:\msys64\usr\bin\bash -lc "rm /mingw64/etc/gdbinit"
     - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy  mingw-w64-x86_64-gcc mingw-w64-x86_64-libusb mingw-w64-x86_64-cmake mingw-w64-x86_64-libxml2 mingw-w64-x86_64-pkg-config mingw-w64-x86_64-libzip mingw-w64-x86_64-doxygen"
