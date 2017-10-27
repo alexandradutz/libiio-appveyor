@@ -14,7 +14,7 @@ configuration:
 install:
     ####
     - cd c:\projects
-    - git clone --depth 1 https://github.com/analogdevices/libiio.git -b mingw-build
+    - git clone --depth 1 https://github.com/analogdevicesinc/libiio.git -b mingw-build
     - cd libiio
     #####
     - echo "Checking out sub-modules..."
