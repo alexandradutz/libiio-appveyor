@@ -40,10 +40,10 @@ build_script:
     - set folder-path=c:\projects\libiio\build-mingw-win32\%configuration%
     # MinGW 32 bit
     - echo "Running cmake for MinGW 32 bit... "
-    - mkdir build-mingw-win32
-    - cd build-mingw-win32
+    - mkdir c:\projects\libiio\build-mingw-win32
+    - cd c:\projects\libiio\build-mingw-win32
     - C:\msys64\usr\bin\bash -lc "pwd"
-    - mkdir "%configuration%"& cd "%configuration%"
+    - mkdir c:\projects\libiio\build-mingw-win32\"%configuration%"& cd c:\projects\libiio\build-mingw-win32\"%configuration%"
     - C:\msys64\usr\bin\bash -lc "pwd"
     - C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-i686-gcc-ada mingw-w64-i686-gcc-fortran mingw-w64-i686-gcc-libgfortran mingw-w64-i686-gcc-objc"
     - C:\msys64\usr\bin\bash -lc "rm /mingw32/etc/gdbinit"
@@ -53,9 +53,9 @@ build_script:
     # MinGW 64 bit
     - cd c:\projects\libiio
     - echo "Running cmake for MinGW 64 bit... "
-    - mkdir build-mingw-win64
-    - cd build-mingw-win64
-    - mkdir "%configuration%"& cd "%configuration%"
+    - mkdir c:\projects\libiio\build-mingw-win64
+    - cd c:\projects\libiio\build-mingw-win64
+    - mkdir c:\projects\libiio\build-mingw-win64\"%configuration%"& cd c:\projects\libiio\build-mingw-win64\"%configuration%"
     - C:\msys64\usr\bin\bash -lc "pwd"
     - C:\msys64\usr\bin\bash -lc "pacman -Rs --noconfirm mingw-w64-x86_64-gcc-ada mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-gcc-libgfortran mingw-w64-x86_64-gcc-objc"
     - C:\msys64\usr\bin\bash -lc "rm /mingw64/etc/gdbinit"
