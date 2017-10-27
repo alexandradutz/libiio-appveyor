@@ -1,6 +1,9 @@
 version: 2015.1.{build}
 clone_depth: 1
 
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 skip_commits:
     message: /(iiod|IIOD):.*/
 
@@ -137,3 +140,6 @@ build_script:
     
     - 7z a "c:\%ARCHIVE_NAME%.zip" c:\%ARCHIVE_NAME%
     - appveyor PushArtifact c:\%ARCHIVE_NAME%.zip
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
